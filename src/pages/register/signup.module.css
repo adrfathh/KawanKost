@@ -1,0 +1,159 @@
+.mainBg{
+    background: linear-gradient(135deg, rgb(122, 199, 199) 0%, rgb(160, 160, 160) 50%, rgb(114, 182, 182) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.card{
+    width: 90rem;
+    height: 50rem;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(135deg, rgb(143, 197, 197) 0%, rgb(74, 121, 124) 50%, rgb(143, 197, 197) 100%);
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.500);
+}
+
+.leftContent img{
+    width: 70rem;
+}
+
+.rightContent{
+    display: flex;
+    flex-direction: column;
+    padding: 5rem 0;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    border-radius: 75px 15px 15px 75px;
+    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.2);
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header img{
+    height: 4rem;
+}
+
+.header h1{
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    font-size: 1.5rem;
+    color: rgb(97, 173, 173);
+}
+
+.formContainer{
+    display: flex;
+    padding: 0 6rem;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.formContainer h1{
+    font-weight: 600;
+    font-size: 2rem;
+    color: rgb(97, 173, 173);
+    align-self: start;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.name{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.name input{
+    width: 48%;
+    padding: 1rem;
+    border: 2px solid rgb(200, 200, 200);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.suffix1, .suffix2, .suffix3, .suffix4 {
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: white;
+    color: rgb(97, 173, 173);
+    padding: 0 5px;
+}
+
+.suffix1 {
+    position: absolute;
+    left: 2.20%;
+    transform: translateY(-50%);
+}
+
+.suffix2 {
+    position: absolute;
+    left: 54%;
+    transform: translateY(-50%);
+}
+
+
+.form > input{
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid rgb(200, 200, 200);
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.suffix3 {
+    position: absolute;
+    left: 2.20%;
+    top: 22%;
+    transform: translateY(-50%);
+}
+
+.suffix4 {
+    position: absolute;
+    left: 2.20%;
+    top: 44%;
+    transform: translateY(-50%);
+}
+
+.form p{
+    font-size: 1rem;
+    color: rgb(100, 100, 100);
+}
+
+.form p a{
+    color: rgb(97, 173, 173);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form button{
+    padding: 1rem;
+    background-color: rgb(143, 197, 197);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form button:hover{
+    background-color: rgb(97, 173, 173);
+}
