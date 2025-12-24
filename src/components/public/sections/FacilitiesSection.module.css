@@ -1,0 +1,29 @@
+.textPrimary {
+  color: #61adad;
+}
+
+.facilityCard {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.facilityCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.facilityIcon {
+  color: #61adad;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.facilityName {
+  color: #333333;
+  font-weight: 500;
+}

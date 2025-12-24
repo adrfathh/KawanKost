@@ -1,0 +1,56 @@
+.cta {
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+}
+
+.ctaTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.ctaSubtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  background-color: #61adad;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #4a8a8a;
+  transform: translateY(-1px);
+}
+
+.buttonWhite {
+  background-color: white;
+  color: #61adad;
+}
+
+.buttonWhite:hover {
+  background-color: #f3f4f6;
+}
+
+.buttonOutlineWhite {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.buttonOutlineWhite:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
