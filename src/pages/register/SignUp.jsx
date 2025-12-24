@@ -8,27 +8,32 @@ import kost_vector from "../../assets/images/kost-vector.png";
 
 function SignUp() {
     const [count, setCount] = useState(0)
-
+    const [agree, setAgree] = useState(false)
+    
     const navigate = useNavigate()
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
+    
     const handleSubmit = (e) => {
-    e.preventDefault()
+        e.preventDefault()
 
-    const users = getUsers()
-    const exists = users.find((u) => u.email === email)
+        const users = getUsers()
+        const exists = users.find((u) => u.email === email)
+        if (exists) {
+            alert("Email sudah terdaftar")
+            return
+        }
 
-    if (exists) {
-        alert("Email sudah terdaftar")
-        return
-    }
+        if (!agree) {
+        alert("Anda harus menyetujui Terms of Service dan Privacy Policy")
+            return
+        }
 
-    saveUser({ firstName, lastName, email, password })
-    navigate("/login")
+        saveUser({ firstName, lastName, email, password })
+        navigate("/login")
     }
 
     return (
@@ -56,10 +61,10 @@ function SignUp() {
                                 <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
                                 <span className={styles.suffix4}>Password</span>
                                 <div className="choice">
-                                    <p><input type="checkbox" /> I agree to the <a href="">terms of service</a> and <a href="">privacy policy</a></p>
+                                    <p><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)}/> I agree to the <a href="">terms of service</a> and <a href="">privacy policy</a></p>
                                     <p>or Already have an account? <Link to="/login">Login</Link></p>
                                 </div>
-                                <button type='submit'>Sign Up</button>
+                                <button disabled={!agree} type='submit'>Sign Up</button>
                             </form>
                         </div>
                     </div>

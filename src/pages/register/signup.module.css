@@ -157,3 +157,8 @@
 .form button:hover{
     background-color: rgb(97, 173, 173);
 }
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
