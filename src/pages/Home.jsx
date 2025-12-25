@@ -16,11 +16,6 @@ function Home() {
   const user = getLoggedInUser();
   const navigate = useNavigate();
 
-  if (!user) {
-    navigate('/login');
-    return null;
-  }
-
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -31,9 +26,11 @@ function Home() {
       <NavigationBar
         user={user}
         onLogout={handleLogout}
+        navigate={navigate}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
+
       <HeroSection />
       <FeaturesSection />
       <FacilitiesSection />

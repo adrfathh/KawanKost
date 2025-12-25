@@ -71,18 +71,28 @@
 
 .kostContent {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 62%;
+}
+
+.contentWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .kostName {
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   color: #333333;
 }
 
 .kostPrice {
   color: #61adad;
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1rem;
 }
 
 .kostAddress {
@@ -90,6 +100,7 @@
   font-size: 0.875rem;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .kostDescription {
@@ -99,6 +110,14 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+.facilitiesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .facilityTag {

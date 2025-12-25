@@ -23,12 +23,17 @@ function Login() {
         const user = loginUser(email, password)
 
         if (!user) {
-        alert("Email atau password salah")
-        return
+            alert("Email atau password salah")
+            return
         }
 
         setLoggedInUser(user)
-        navigate("/page/home")
+
+        if (user.role === "admin") {
+            navigate("/dashboard");
+        } else {
+            navigate("/");
+        }
     }
 
     return (
