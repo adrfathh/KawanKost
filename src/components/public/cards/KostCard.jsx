@@ -1,16 +1,28 @@
 import { Star, MapPin } from 'lucide-react';
 import styles from './KostCard.module.css';
 
+// shadcn ui
+
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from '@/components/ui/button';
+import { Badge } from "@/components/ui/badge"
+
 const KostCard = ({ kost }) => {
   return (
-    <div className={styles.kostCard}>
+    <Card className={styles.kostCard}>
       {/* Image */}
       <div className={styles.kostImageContainer}>
         <img src={kost.image} alt={kost.name} className={styles.kostImage} />
         {!kost.isAvailable && <div className={styles.kostStatus}>Penuh</div>}
         <div className={styles.kostRating}>
-          <Star size={14} className="mr-1 fill-white" />
-          {kost.rating}
+          <Badge variant="secondary" className="bg-[#61ADAD] text-white">
+            <Star size={14} className="mr-1 fill-white" />
+            {kost.rating}
+          </Badge>
         </div>
         <div className={`${styles.kostType} ${
           kost.type === 'Putri'
@@ -27,15 +39,15 @@ const KostCard = ({ kost }) => {
       <div className={styles.kostContent}>
         <div className={styles.contentWrapper}>
           <div className="flex justify-between items-center">
-            <h3 className={styles.kostName}>{kost.name}</h3>
+            <CardTitle className={styles.kostName}>{kost.name}</CardTitle>
             <span className={styles.kostPrice}>{kost.price}</span>
           </div>
 
           <div className={`${styles.kostAddress}`}>
-            <p className="text-sm">{kost.address}</p>
+            <CardDescription className="text-sm">{kost.address}</CardDescription>
           </div>
 
-          <p className={styles.kostDescription}>{kost.description}</p>
+          <CardDescription className={styles.kostDescription}>{kost.description}</CardDescription>
 
           {/* Facilities */}
           <div className={styles.facilitiesContainer}>
@@ -48,11 +60,11 @@ const KostCard = ({ kost }) => {
           </div>
         </div>
 
-        <button className={`w-full ${styles.button} ${ !kost.isAvailable && styles.buttonDisabled }`} disabled={!kost.isAvailable}>
+        <Button className={`w-full ${styles.button} ${ !kost.isAvailable && styles.buttonDisabled }`} disabled={!kost.isAvailable}>
           {kost.isAvailable ? 'Lihat Detail' : 'Tidak Tersedia'}
-        </button>
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 };
 
