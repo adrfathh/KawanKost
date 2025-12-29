@@ -1,4 +1,4 @@
-import { HomeIcon, Heart, Search, MessageCircle, User, Menu, X } from 'lucide-react';
+import { HomeIcon, Heart, Search, MessageCircle, User, Menu, X, MessageCircleMore } from 'lucide-react';
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from './NavigationBar.module.css';
 import kawankostIcon from '../../../assets/icons/kawankost.png';
@@ -76,14 +76,15 @@ const NavigationBar = ({ user, onLogout, navigate, isMenuOpen, setIsMenuOpen }) 
                   </button>
                 </>
               ) : (
-                <button onClick={() => navigate("/login")} className={`${styles.button} w-full`}>
-                  Login
-                </button>
+                <button onClick={() => navigate("/login")} className={`${styles.button} w-full`}>Login</button>
               )}
             </div>
           </div>
         )}
 
+      </div>
+      <div className={styles.messageWrapper}>
+        <MessageCircleMore size={30} className={styles.messageCircle} />
       </div>
     </nav>
   );

@@ -123,7 +123,39 @@
   background-color: #f3f4f6;
 }
 
-@media (min-width: 768px) {
+.messageWrapper{
+  display: none;
+}
+
+
+@media (max-width: 768px) {
+  .messageWrapper {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #61adad;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 4rem;
+    display: flex;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .messageWrapper:hover {
+    background-color: #4a8a8a;
+  }
+  
+  .messageCircle {
+    align-self: center;
+    top: 10rem;
+    right: 10rem;
+    color: white;
+    cursor: pointer;
+  }
   .navContainer {
     padding: 0.75rem 1rem;
   }

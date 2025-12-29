@@ -3,6 +3,10 @@ import styles from './login.module.css'
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser, setLoggedInUser } from "../../hooks/useAuth"
 
+// shadcn ui
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
 import kawankost from "../../assets/icons/kawankost.png";
 import kost_vector from "../../assets/images/kost-vector.png";
 
@@ -50,12 +54,12 @@ function Login() {
                         <div className={styles.formContainer}>
                             <h1>Enter Account</h1>
                             <form className={styles.form} onSubmit={handleSubmit}>
-                                <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+                                <Input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                                 <span className={styles.suffix3}>Email</span>
-                                <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+                                <Input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
                                 <span className={styles.suffix4}>Password</span>
                                 <p>Don't have an account yet? <Link to="/signup">Sign Up</Link></p>
-                                <button type='submit'>Login</button>
+                                <Button type='submit'>Login</Button>
                             </form>
                         </div>
                     </div>
