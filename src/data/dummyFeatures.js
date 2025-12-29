@@ -1,6 +1,6 @@
 import { Shield, Check, MapPin, Clock } from 'lucide-react';
 
-export const features = [
+export const dummyFeatures = [
 {
     icon: Shield,
     title: 'Terpercaya',

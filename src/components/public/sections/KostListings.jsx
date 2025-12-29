@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
-import { kostList } from '../../../data/dummyKost';
+import { dummyKostList } from '../../../data/dummyKost';
 import styles from './KostListings.module.css';
 import KostCard from '../cards/KostCard';
 
 const KostListings = () => {
+  const [kostList, setKostList] = useState(dummyKostList);
+
   return (
     <div className="py-10 bg-white">
       <div className="container flex flex-col gap-8 mx-auto px-4">

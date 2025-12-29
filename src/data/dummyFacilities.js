@@ -1,6 +1,6 @@
 import { Wifi, Car, Bath, AirVent, Shirt, Utensils } from 'lucide-react';
 
-export   const facilities = [
+export const dummyFacilities = [
     { 
         name: 'Wi-Fi',
         icon: Wifi

@@ -3,7 +3,7 @@ import kostSamara from '../assets/images/kost-samara.png';
 import kostPutraKhalifa from '../assets/images/kost-putra-khalifa.png';
 import kostMrh from '../assets/images/kost-mrh.png';
 
-export const kostList = [
+export const dummyKostList = [
     {
         id: 1,
         name: 'Kost Eksklusif Ayu',

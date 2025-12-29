@@ -1,7 +1,9 @@
-import { facilities } from '../../../data/dummyFacilities';
+import { useState } from 'react';
+import { dummyFacilities } from '../../../data/dummyFacilities';
 import styles from './FacilitiesSection.module.css';
 
 const FacilitiesSection = () => {
+  const [facilities, setFacilities] = useState(dummyFacilities);
 
   return (
     <div className="py-12" style={{ backgroundColor: '#f8f8f8' }}>
