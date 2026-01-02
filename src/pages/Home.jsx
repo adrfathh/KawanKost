@@ -10,15 +10,21 @@ import FacilitiesSection from '../components/public/sections/FacilitiesSection';
 import KostListings from '../components/public/sections/KostListings';
 import CTASection from '../components/public/sections/CTASection';
 import Footer from '../components/public/layout/Footer';
+import ChatSidebarUser from '../components/public/ChatSidebarUser';
 
 function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const user = getLoggedInUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleChatOpen = () => {
+    setIsChatOpen(true);
   };
 
   return (
@@ -29,6 +35,7 @@ function Home() {
         navigate={navigate}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        onChatOpen={handleChatOpen}
       />
 
       <HeroSection />
@@ -37,6 +44,11 @@ function Home() {
       <KostListings />
       <CTASection />
       <Footer user={user} onLogout={handleLogout} />
+
+      <ChatSidebarUser
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </div>
   );
 }

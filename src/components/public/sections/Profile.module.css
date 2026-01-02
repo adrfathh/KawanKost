@@ -1,0 +1,508 @@
+.profilePage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding-top: 5rem;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.avatarSection {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.userName {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.profileCompletion {
+  margin-bottom: 0.5rem;
+}
+
+.completionBar {
+  width: 200px;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.completionFill {
+  height: 100%;
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.completionText {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.completionHint {
+  font-size: 0.875rem;
+  color: #666;
+  max-width: 300px;
+  margin-top: 0.25rem;
+}
+
+.profileStats {
+  display: flex;
+  gap: 2rem;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #61adad;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.profileContent {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+}
+
+.sidebar {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  height: fit-content;
+}
+
+.menu {
+  margin-bottom: 2rem;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  color: #666;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  margin-bottom: 0.25rem;
+}
+
+.menuItem:hover {
+  background: #f8f9fa;
+  color: #2c3e3e;
+}
+
+.menuIcon {
+  color: #61adad;
+}
+
+.verifiedIcon {
+  margin-left: auto;
+  color: #4caf50;
+}
+
+.chevron {
+  margin-left: 0.5rem;
+  color: #999;
+}
+
+.myKost {
+  border-top: 1px solid #e9ecef;
+  padding-top: 1.5rem;
+}
+
+.myKostTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 1rem;
+}
+
+.kostEmptyState {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.kostEmptyText {
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.kostEmptySubtext {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.findKostButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.findKostButton:hover {
+  transform: translateY(-1px);
+}
+
+.kostTips {
+  background: #fff8e1;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #ffd54f;
+}
+
+.kostTips h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ff8f00;
+  margin-bottom: 0.5rem;
+}
+
+.tipsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tipsList li {
+  font-size: 0.75rem;
+  color: #ff8f00;
+  padding: 0.25rem 0;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.tipsList li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #ff8f00;
+}
+
+.mainContent {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.contentHeader {
+  margin-bottom: 2rem;
+}
+
+.contentTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.contentSubtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.editButton {
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.editButton:hover {
+  transform: translateY(-1px);
+}
+
+.profileForm {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 0;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.formInput, .formSelect {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease;
+}
+
+.formInput:focus, .formSelect:focus {
+  outline: none;
+  border-color: #61adad;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.radioLabel input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #61adad;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 1rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.cancelButton, .saveButton {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #666;
+}
+
+.cancelButton:hover {
+  background: #e9ecef;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  border: none;
+  color: white;
+}
+
+.saveButton:hover {
+  transform: translateY(-1px);
+}
+
+.profileInfo {
+  animation: fadeIn 0.3s ease;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.infoItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.infoIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #f0f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #61adad;
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.infoValue {
+  font-weight: 500;
+  color: #2c3e3e;
+}
+
+.privacySection {
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.privacyTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 0.75rem;
+}
+
+.privacyText {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.privacyInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.privacyItem {
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e9ecef;
+}
+
+.privacyItem h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.privacyItem p {
+  font-size: 0.75rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.helpSection {
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.helpTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2c3e3e;
+  margin-bottom: 0.5rem;
+}
+
+.helpText {
+  color: #61adad;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .profileContent {
+    grid-template-columns: 1fr;
+  }
+  
+  .profileHeader {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .profileStats {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+  }
+}

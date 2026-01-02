@@ -11,20 +11,6 @@ export const saveUser = (user) => {
   localStorage.setItem("users", JSON.stringify(users))
 }
 
-// export const loginUser = (email, password) => {
-//   if (
-//     email === dummyAdmin.email &&
-//     password === dummyAdmin.password
-//   ) {
-//     return dummyAdmin;
-//   }
-
-//   const users = getUsers()
-//   return users.find(
-//     (u) => u.email === email && u.password === password
-//   )
-// }
-
 export const loginUser = (email, password) => {
   if (
     email === dummyAdmin.email &&
@@ -45,7 +31,6 @@ export const loginUser = (email, password) => {
     (u) => u.email === email && u.password === password
   );
 };
-
 
 export const setLoggedInUser = (user) => {
   localStorage.setItem("loggedInUser", JSON.stringify(user))
