@@ -1,24 +1,8 @@
-import {
-  HomeIcon,
-  Heart,
-  Search,
-  MessageCircle,
-  User,
-  Menu,
-  X,
-  MessageCircleMore,
-} from 'lucide-react';
+import { HomeIcon, Heart, Search, MessageCircle, User, Menu, X, MessageCircleMore } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './NavigationBar.module.css';
 
-const NavigationBar = ({
-  user,
-  onLogout,
-  navigate,
-  isMenuOpen,
-  setIsMenuOpen,
-  onChatOpen,
-}) => {
+const NavigationBar = ({ user, onLogout, navigate, isMenuOpen, setIsMenuOpen, onChatOpen }) => {
   const location = useLocation();
 
   const menuItems = [
@@ -55,42 +39,22 @@ const NavigationBar = ({
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
             {menuItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => handleMenuItemClick(item)}
-                className={`${styles.menuItem} ${
-                  location.pathname === item.path ? styles.menuItemActive : ''
-                }`}
-              >
-                {item.icon}
+              <button key={item.name} onClick={() => handleMenuItemClick(item)} className={`${styles.menuItem} ${location.pathname === item.path ? styles.menuItemActive : ''}`}>{item.icon}
                 <span className="font-medium">{item.name}</span>
               </button>
             ))}
             {user ? (
               <div className="flex items-center space-x-3">
                 <span className="text-sm">Halo, {user.firstName}!</span>
-                <button
-                  onClick={onLogout}
-                  className={`${styles.button} ${styles.buttonWhite}`}
-                >
-                  Logout
-                </button>
+                <button onClick={onLogout}className={`${styles.button} ${styles.buttonWhite}`}>Logout</button>
               </div>
             ) : (
-              <button
-                onClick={() => navigate('/login')}
-                className={styles.button}
-              >
-                Login
-              </button>
+              <button onClick={() => navigate('/login')} className={styles.button}>Login</button>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className={`${styles.mobileMenuButton} md:hidden`}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+          <button className={`${styles.mobileMenuButton} md:hidden`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -99,13 +63,7 @@ const NavigationBar = ({
         {isMenuOpen && (
           <div className={`${styles.mobileMenu} md:hidden space-y-2`}>
             {menuItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => handleMenuItemClick(item)}
-                className={`${styles.mobileMenuItem} ${
-                  location.pathname === item.path ? styles.menuItemActive : ''
-                }`}
-              >
+              <button key={item.name} onClick={() => handleMenuItemClick(item)} className={`${styles.mobileMenuItem} ${ location.pathname === item.path ? styles.menuItemActive : '' }`}>
                 {item.icon}
                 <span className="font-medium">{item.name}</span>
               </button>
@@ -115,23 +73,11 @@ const NavigationBar = ({
             <div className={`${styles.mobileMenuDivider} pt-4`}>
               {user ? (
                 <>
-                  <p className="px-4 py-2 text-sm">
-                    Login sebagai: {user.firstName} {user.lastName}
-                  </p>
-                  <button
-                    onClick={onLogout}
-                    className={`${styles.button} ${styles.buttonWhite} w-full mt-2`}
-                  >
-                    Logout
-                  </button>
+                  <p className="px-4 py-2 text-sm">Login sebagai: {user.firstName} {user.lastName}</p>
+                  <button onClick={onLogout} className={`${styles.button} ${styles.buttonWhite} w-full mt-2`}>Logout</button>
                 </>
               ) : (
-                <button
-                  onClick={() => navigate('/login')}
-                  className={`${styles.button} w-full`}
-                >
-                  Login
-                </button>
+                <button onClick={() => navigate('/login')} className={`${styles.button} w-full`} > Login </button>
               )}
             </div>
           </div>
@@ -144,13 +90,6 @@ const NavigationBar = ({
           <MessageCircleMore size={30} />
         </button>
       </div>
-
-      {/* Chat Notification Badge */}
-      {user && (
-        <div className={styles.chatNotification}>
-          <span className={styles.notificationDot}></span>
-        </div>
-      )}
     </nav>
   );
 };

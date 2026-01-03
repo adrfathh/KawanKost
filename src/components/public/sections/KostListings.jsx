@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { dummyKostList } from '../../../data/dummyKost';
 import styles from './KostListings.module.css';
 import KostCard from '../cards/KostCard';
 
 const KostListings = () => {
-  const [kostList, setKostList] = useState(dummyKostList);
-
+  useEffect(() => {
+    fetch("https://6957da9df7ea690182d34812.mockapi.io/KostList")
+    .then((res) => res.json())
+    .then((data) => setKost(data));
+  }, []);
+  const [kostList, setKost] = useState(dummyKostList);
+  
   return (
     <div className="py-10 bg-white">
       <div className="container flex flex-col gap-8 mx-auto px-4">

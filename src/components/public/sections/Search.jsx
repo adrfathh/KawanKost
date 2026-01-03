@@ -1,10 +1,29 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { dummyKostList } from '../../../data/dummyKost';
+import { getLoggedInUser, logout } from '../../../hooks/useAuth';
 import { Search, Filter, MapPin, ChevronDown, Star } from 'lucide-react';
 import styles from './Search.module.css';
-import { dummyKostList } from '../../../data/dummyKost';
 import KostCard from '../cards/KostCard';
+import Navbar from '../layout/NavigationBar.jsx';
+import ChatSidebarUser from '../layout/ChatSidebarUser';
 
 const SearchPage = () => {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const user = getLoggedInUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const handleChatOpen = () => {
+    setIsChatOpen(true);
+  };
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState({
     type: 'all',
@@ -12,18 +31,12 @@ const SearchPage = () => {
     facilities: [],
     university: '',
   });
+
   const [showFilters, setShowFilters] = useState(false);
   const [searchResults, setSearchResults] = useState(dummyKostList);
 
   const universities = ['UGM', 'UNY', 'UNPAD', 'UNAIR', 'UI', 'UNDIP', 'ITB'];
-  const facilityOptions = [
-    'Wi-Fi',
-    'AC',
-    'Kamar Mandi Dalam',
-    'Parkir',
-    'Laundry',
-    'Dapur',
-  ];
+  const facilityOptions = ['Wi-Fi', 'AC', 'Kamar Mandi Dalam', 'Parkir', 'Laundry', 'Dapur'];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -54,6 +67,7 @@ const SearchPage = () => {
 
   return (
     <div className={styles.searchPage}>
+      <Navbar user={user} onLogout={handleLogout} navigate={navigate} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} onChatOpen={handleChatOpen} />
       <div className="container mx-auto px-4 py-8">
         {/* Search Header */}
         <div className={styles.searchHeader}>
@@ -263,6 +277,7 @@ const SearchPage = () => {
           </>
         )}
       </div>
+      <ChatSidebarUser isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, UserPlus, Mail, Phone, Calendar } from 'lucide-react';
 import styles from './UserManagement.module.css';
-import { getUsers } from '../../hooks/useAuth';
+import { getUsers } from '../../../hooks/useAuth';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

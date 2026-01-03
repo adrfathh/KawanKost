@@ -1,17 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  X,
-  Send,
-  User,
-  Clock,
-  Search,
-  Phone,
-  Video,
-  MoreVertical,
-  Image,
-  Paperclip,
-  Smile,
-} from 'lucide-react';
+import { X, Send, User, Clock, Search, Phone, Video, MoreVertical, Image, Paperclip, Smile } from 'lucide-react';
 import styles from './ChatSidebarUser.module.css';
 
 const ChatSidebarUser = ({ isOpen, onClose }) => {

@@ -1,9 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react';
 import styles from './KostManagement.module.css';
-import { dummyKostList } from '../../data/dummyKost';
+import { dummyKostList } from '../../../data/dummyKost.js';
+
 
 const KostManagement = () => {
+  useEffect(() => {
+    fetch("https://6957da9df7ea690182d34812.mockapi.io/KostList")
+    .then((res) => res.json())
+    .then((data) => setKosts(data));
+  }, []);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    type: '',
+    price: '',
+    address: '',
+    description: '',
+    isAvailable: false,
+  });
+
+
   const [kosts, setKosts] = useState(dummyKostList);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingKost, setEditingKost] = useState(null);
@@ -14,24 +31,6 @@ const KostManagement = () => {
       kost.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       kost.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handleDelete = (id) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus kost ini?')) {
-      setKosts(kosts.filter((kost) => kost.id !== id));
-    }
-  };
-
-  const handleEdit = (kost) => {
-    setEditingKost(kost);
-    setIsModalOpen(true);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission
-    setIsModalOpen(false);
-    setEditingKost(null);
-  };
 
   const formFields = [
     { name: 'name', label: 'Nama Kost', type: 'text' },
@@ -53,7 +52,6 @@ const KostManagement = () => {
         <h1>Kelola Kost</h1>
         <button
           className={styles.addButton}
-          onClick={() => setIsModalOpen(true)}
         >
           <Plus size={20} />
           <span>Tambah Kost</span>
@@ -133,14 +131,12 @@ const KostManagement = () => {
                     <button
                       className={styles.actionButton}
                       title="Edit"
-                      onClick={() => handleEdit(kost)}
                     >
                       <Edit size={16} />
                     </button>
                     <button
                       className={`${styles.actionButton} ${styles.delete}`}
                       title="Hapus"
-                      onClick={() => handleDelete(kost.id)}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -159,11 +155,6 @@ const KostManagement = () => {
             <div className={styles.modalHeader}>
               <h2>{editingKost ? 'Edit Kost' : 'Tambah Kost Baru'}</h2>
               <button
-                className={styles.closeButton}
-                onClick={() => {
-                  setIsModalOpen(false);
-                  setEditingKost(null);
-                }}
               >
                 ×
               </button>
@@ -208,10 +199,6 @@ const KostManagement = () => {
                 <button
                   type="button"
                   className={styles.cancelButton}
-                  onClick={() => {
-                    setIsModalOpen(false);
-                    setEditingKost(null);
-                  }}
                 >
                   Batal
                 </button>

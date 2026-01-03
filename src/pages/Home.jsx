@@ -10,7 +10,7 @@ import FacilitiesSection from '../components/public/sections/FacilitiesSection';
 import KostListings from '../components/public/sections/KostListings';
 import CTASection from '../components/public/sections/CTASection';
 import Footer from '../components/public/layout/Footer';
-import ChatSidebarUser from '../components/public/ChatSidebarUser';
+import ChatSidebarUser from '../components/public/layout/ChatSidebarUser';
 
 function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,26 +29,14 @@ function Home() {
 
   return (
     <div>
-      <NavigationBar
-        user={user}
-        onLogout={handleLogout}
-        navigate={navigate}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        onChatOpen={handleChatOpen}
-      />
-
+      <NavigationBar user={user} onLogout={handleLogout} navigate={navigate} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} onChatOpen={handleChatOpen} />
       <HeroSection />
       <FeaturesSection />
       <FacilitiesSection />
       <KostListings />
       <CTASection />
       <Footer user={user} onLogout={handleLogout} />
-
-      <ChatSidebarUser
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-      />
+      <ChatSidebarUser isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 }

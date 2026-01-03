@@ -1,47 +1,66 @@
 import { useState } from 'react';
-import {
-  User,
-  Calendar,
-  Phone,
-  Mail,
-  MapPin,
-  Shield,
-  Clock,
-  CreditCard,
-  History,
-  Settings,
-  ChevronRight,
-  CheckCircle,
-} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { getLoggedInUser, logout } from '../../../hooks/useAuth';
+import { User, Calendar, Phone, Mail, MapPin, Shield, Clock, CreditCard, History, Settings, ChevronRight, CheckCircle } from 'lucide-react';
 import styles from './Profile.module.css';
+import Navbar from '../layout/NavigationBar.jsx';
+import ChatSidebarUser from '../layout/ChatSidebarUser';
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const user = getLoggedInUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const handleChatOpen = () => {
+    setIsChatOpen(true);
+  };
+
+  const requiredFields = [
+    'fullName',
+    'gender',
+    'birthDate',
+    'phone',
+    'city'
+  ];
+
+  const isProfileComplete = (profile) => {
+    return requiredFields.every(
+      (key) => profile[key] && profile[key].toString().trim() !== ''
+    );
+  };
+
   const [profileData, setProfileData] = useState({
-    fullName: user?.fullName || 'Zaky Hafizhan',
-    gender: 'Laki-laki',
-    birthDate: '2000-01-01',
-    occupation: 'Mahasiswa',
-    institution: 'UGM',
-    city: 'Yogyakarta',
-    phone: '+62 812-3456-7890',
-    status: 'Belum Menikah',
-    education: 'S1',
-    emergencyContact: '+62 878-9012-3456',
+    fullName: `${user?.firstName || ''} ${user?.lastName || ''}`.trim(),
+    gender: user?.gender || '',
+    birthDate: user?.birthDate || '',
+    phone: user?.phone || '',
+    city: user?.city || ''
   });
 
+  const filledCount = requiredFields.filter(
+    (key) => profileData[key]
+  ).length;
+
+  const profileCompletePercent = Math.round(
+    (filledCount / requiredFields.length) * 100
+  );
+
+
+  const profileCompleted = isProfileComplete(profileData);
   const [isEditing, setIsEditing] = useState(false);
-  const profileComplete = 75;
+  // const profileComplete = 75;
 
   const menuItems = [
     { icon: History, label: 'Riwayat Sewa', path: '/history' },
     { icon: CreditCard, label: 'Riwayat Transaksi', path: '/transactions' },
     { icon: History, label: 'Riwayat Kos', path: '/kost-history' },
-    {
-      icon: Shield,
-      label: 'Verifikasi Akun',
-      path: '/verification',
-      verified: true,
-    },
+    { icon: Shield, label: 'Verifikasi Akun', path: '/verification', verified: true },
     { icon: Settings, label: 'Pengaturan', path: '/settings' },
   ];
 
@@ -53,6 +72,7 @@ const ProfilePage = ({ user }) => {
 
   return (
     <div className={styles.profilePage}>
+      <Navbar user={user} onLogout={handleLogout} navigate={navigate} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} onChatOpen={handleChatOpen} />
       <div className="container mx-auto px-4 py-8">
         {/* Profile Header */}
         <div className={styles.profileHeader}>
@@ -64,19 +84,14 @@ const ProfilePage = ({ user }) => {
               <h1 className={styles.userName}>{profileData.fullName}</h1>
               <div className={styles.profileCompletion}>
                 <div className={styles.completionBar}>
-                  <div
-                    className={styles.completionFill}
-                    style={{ width: `${profileComplete}%` }}
-                  />
+                  <div className={styles.completionFill} style={{ width: `${profileCompletePercent}%` }} />
+                  <span>{profileCompletePercent}% data profil lengkap</span>
                 </div>
                 <span className={styles.completionText}>
-                  {profileComplete}% data profil lengkap
+                  {profileCompleted}% data profil lengkap
                 </span>
               </div>
-              <p className={styles.completionHint}>
-                Profil yang lengkap bisa memberikan rekomendasi yang lebih
-                akurat
-              </p>
+              <p className={styles.completionHint}>Profil yang lengkap bisa memberikan rekomendasi yang lebih akurat</p>
             </div>
           </div>
 
@@ -102,11 +117,7 @@ const ProfilePage = ({ user }) => {
           <div className={styles.sidebar}>
             <nav className={styles.menu}>
               {menuItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.path}
-                  className={styles.menuItem}
-                >
+                <a key={item.label} href={item.path} className={styles.menuItem}>
                   <div className={styles.menuIcon}>
                     <item.icon size={20} />
                   </div>
@@ -124,13 +135,8 @@ const ProfilePage = ({ user }) => {
               <h3 className={styles.myKostTitle}>Kos Saya</h3>
               <div className={styles.kostEmptyState}>
                 <p className={styles.kostEmptyText}>Kamu belum menyewa kos</p>
-                <p className={styles.kostEmptySubtext}>
-                  Yuk, sewa di KawanKost atau masukkan kode dari pemilik kos
-                  untuk mengaktifkan halaman ini!
-                </p>
-                <button className={styles.findKostButton}>
-                  Cari dan Sewa Kost
-                </button>
+                <p className={styles.kostEmptySubtext}>Yuk, sewa di KawanKost atau masukkan kode dari pemilik kos untuk mengaktifkan halaman ini!</p>
+                <button className={styles.findKostButton}>Cari dan Sewa Kost</button>
               </div>
 
               <div className={styles.kostTips}>
@@ -147,15 +153,10 @@ const ProfilePage = ({ user }) => {
           <div className={styles.mainContent}>
             <div className={styles.contentHeader}>
               <h2 className={styles.contentTitle}>Informasi Pribadi</h2>
-              <p className={styles.contentSubtitle}>
-                Lengkapi data diri Anda untuk mendapatkan pengalaman terbaik
-              </p>
+              <p className={styles.contentSubtitle}>Lengkapi data diri Anda untuk mendapatkan pengalaman terbaik</p>
               {!isEditing && (
-                <button
-                  className={styles.editButton}
-                  onClick={() => setIsEditing(true)}
-                >
-                  Edit Profil
+                <button className={styles.editButton} onClick={() => setIsEditing(true)}>
+                  {profileCompleted ? 'Edit Profil' : 'Lengkapi Data Diri'}
                 </button>
               )}
             </div>
@@ -165,162 +166,31 @@ const ProfilePage = ({ user }) => {
                 <div className={styles.formGrid}>
                   <div className={styles.formGroup}>
                     <label htmlFor="fullName">Nama Lengkap</label>
-                    <input
-                      type="text"
-                      id="fullName"
-                      value={profileData.fullName}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          fullName: e.target.value,
-                        })
-                      }
-                      className={styles.formInput}
-                    />
+                    <input type="text" id="fullName" value={profileData.fullName} onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value, })} className={styles.formInput}/>
                   </div>
 
                   <div className={styles.formGroup}>
                     <label>Jenis Kelamin</label>
                     <div className={styles.radioGroup}>
-                      <label className={styles.radioLabel}>
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="Laki-laki"
-                          checked={profileData.gender === 'Laki-laki'}
-                          onChange={(e) =>
-                            setProfileData({
-                              ...profileData,
-                              gender: e.target.value,
-                            })
-                          }
-                        />
+                      <div className={styles.radioLabel}>
+                        <input type="radio" name="gender" value="Laki-laki" checked={profileData.gender === 'Laki-laki'} onChange={(e) => setProfileData({...profileData, gender: e.target.value, })} />
                         <span>Laki-laki</span>
-                      </label>
-                      <label className={styles.radioLabel}>
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="Perempuan"
-                          checked={profileData.gender === 'Perempuan'}
-                          onChange={(e) =>
-                            setProfileData({
-                              ...profileData,
-                              gender: e.target.value,
-                            })
-                          }
-                        />
+                      </div>
+                      <div className={styles.radioLabel}>
+                        <input type="radio" name="gender" value="Perempuan" checked={profileData.gender === 'Perempuan'} onChange={(e) => setProfileData({ ...profileData, gender: e.target.value, })}/>
                         <span>Perempuan</span>
-                      </label>
+                      </div>
                     </div>
                   </div>
 
                   <div className={styles.formGroup}>
                     <label htmlFor="birthDate">Tanggal Lahir</label>
-                    <input
-                      type="date"
-                      id="birthDate"
-                      value={profileData.birthDate}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          birthDate: e.target.value,
-                        })
-                      }
-                      className={styles.formInput}
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="occupation">Pekerjaan</label>
-                    <select
-                      id="occupation"
-                      value={profileData.occupation}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          occupation: e.target.value,
-                        })
-                      }
-                      className={styles.formSelect}
-                    >
-                      <option>Mahasiswa</option>
-                      <option>Pekerja</option>
-                      <option>Wirausaha</option>
-                      <option>Lainnya</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="institution">
-                      Nama Institusi/Kampus/Sekolah
-                    </label>
-                    <input
-                      type="text"
-                      id="institution"
-                      value={profileData.institution}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          institution: e.target.value,
-                        })
-                      }
-                      className={styles.formInput}
-                      placeholder="Contoh: UGM"
-                    />
+                    <input type="date" id="birthDate" value={profileData.birthDate} onChange={(e) => setProfileData({ ...profileData, birthDate: e.target.value, })} className={styles.formInput}/>
                   </div>
 
                   <div className={styles.formGroup}>
                     <label htmlFor="city">Kota Asal</label>
-                    <input
-                      type="text"
-                      id="city"
-                      value={profileData.city}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, city: e.target.value })
-                      }
-                      className={styles.formInput}
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="status">Status</label>
-                    <select
-                      id="status"
-                      value={profileData.status}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          status: e.target.value,
-                        })
-                      }
-                      className={styles.formSelect}
-                    >
-                      <option>Belum Menikah</option>
-                      <option>Menikah</option>
-                      <option>Lainnya</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="education">Pendidikan Terakhir</label>
-                    <select
-                      id="education"
-                      value={profileData.education}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          education: e.target.value,
-                        })
-                      }
-                      className={styles.formSelect}
-                    >
-                      <option>SMA/SMK</option>
-                      <option>D3</option>
-                      <option>S1</option>
-                      <option>S2</option>
-                      <option>S3</option>
-                    </select>
+                    <input type="text" id="city" value={profileData.city} onChange={(e) => setProfileData({ ...profileData, city: e.target.value })} className={styles.formInput} />
                   </div>
                 </div>
 
@@ -328,36 +198,14 @@ const ProfilePage = ({ user }) => {
                 <div className={styles.section}>
                   <h3 className={styles.sectionTitle}>Kontak Darurat</h3>
                   <div className={styles.formGroup}>
-                    <label htmlFor="emergencyContact">
-                      Nomor Kontak Darurat
-                    </label>
-                    <input
-                      type="tel"
-                      id="emergencyContact"
-                      value={profileData.emergencyContact}
-                      onChange={(e) =>
-                        setProfileData({
-                          ...profileData,
-                          emergencyContact: e.target.value,
-                        })
-                      }
-                      className={styles.formInput}
-                      placeholder="+62 xxx xxxx xxxx"
-                    />
+                    <label htmlFor="emergencyContact">Nomor Kontak Darurat</label>
+                    <input type="tel" id="phone" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value,})} className={styles.formInput} placeholder="+62 xxx xxxx xxxx" />
                   </div>
                 </div>
 
                 <div className={styles.formActions}>
-                  <button
-                    type="button"
-                    className={styles.cancelButton}
-                    onClick={() => setIsEditing(false)}
-                  >
-                    Batal
-                  </button>
-                  <button type="submit" className={styles.saveButton}>
-                    Simpan Perubahan
-                  </button>
+                  <button type="button" className={styles.cancelButton} onClick={() => setIsEditing(false)}>Batal</button>
+                  <button type="submit" className={styles.saveButton}>Simpan Perubahan</button>
                 </div>
               </form>
             ) : (
@@ -370,7 +218,9 @@ const ProfilePage = ({ user }) => {
                     <div>
                       <div className={styles.infoLabel}>Nama Lengkap</div>
                       <div className={styles.infoValue}>
-                        {profileData.fullName}
+                          {profileData.fullName || (
+                            <span className={styles.incomplete}>Belum diisi</span>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -382,7 +232,9 @@ const ProfilePage = ({ user }) => {
                     <div>
                       <div className={styles.infoLabel}>Jenis Kelamin</div>
                       <div className={styles.infoValue}>
-                        {profileData.gender}
+                          {profileData.gender || (
+                            <span className={styles.incomplete}>Belum diisi</span>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -394,31 +246,9 @@ const ProfilePage = ({ user }) => {
                     <div>
                       <div className={styles.infoLabel}>Tanggal Lahir</div>
                       <div className={styles.infoValue}>
-                        {profileData.birthDate}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={styles.infoItem}>
-                    <div className={styles.infoIcon}>
-                      <User size={20} />
-                    </div>
-                    <div>
-                      <div className={styles.infoLabel}>Pekerjaan</div>
-                      <div className={styles.infoValue}>
-                        {profileData.occupation}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={styles.infoItem}>
-                    <div className={styles.infoIcon}>
-                      <Mail size={20} />
-                    </div>
-                    <div>
-                      <div className={styles.infoLabel}>Institusi/Kampus</div>
-                      <div className={styles.infoValue}>
-                        {profileData.institution}
+                          {profileData.birthDate || (
+                            <span className={styles.incomplete}>Belum diisi</span>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -429,7 +259,11 @@ const ProfilePage = ({ user }) => {
                     </div>
                     <div>
                       <div className={styles.infoLabel}>Kota Asal</div>
-                      <div className={styles.infoValue}>{profileData.city}</div>
+                      <div className={styles.infoValue}>
+                          {profileData.city || (
+                            <span className={styles.incomplete}>Belum diisi</span>
+                          )}
+                      </div>
                     </div>
                   </div>
 
@@ -440,19 +274,9 @@ const ProfilePage = ({ user }) => {
                     <div>
                       <div className={styles.infoLabel}>Nomor Telepon</div>
                       <div className={styles.infoValue}>
-                        {profileData.phone}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={styles.infoItem}>
-                    <div className={styles.infoIcon}>
-                      <Shield size={20} />
-                    </div>
-                    <div>
-                      <div className={styles.infoLabel}>Status</div>
-                      <div className={styles.infoValue}>
-                        {profileData.status}
+                          {profileData.phone || (
+                            <span className={styles.incomplete}>Belum diisi</span>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -461,43 +285,27 @@ const ProfilePage = ({ user }) => {
                 {/* Privacy Info */}
                 <div className={styles.privacySection}>
                   <h3 className={styles.privacyTitle}>Pengaturan Privasi</h3>
-                  <p className={styles.privacyText}>
-                    Dengan menampilkan data, pemilik properti dapat memberimu
-                    respons yang lebih lancar. Data hanya digunakan di platform
-                    KawanKost.
-                  </p>
+                  <p className={styles.privacyText}>Dengan menampilkan data, pemilik properti dapat memberimu respons yang lebih lancar. Data hanya digunakan di platform KawanKost.</p>
 
                   <div className={styles.privacyInfo}>
                     <div className={styles.privacyItem}>
                       <h4>Informasi Umum (Data wajib)</h4>
-                      <p>
-                        Nama, status perkawinan, jenis kelamin, pekerjaan, lama
-                        bergabung, keaktifan akun.
-                      </p>
+                      <p>Nama, status perkawinan, jenis kelamin, pekerjaan, lama bergabung, keaktifan akun.</p>
                     </div>
 
                     <div className={styles.privacyItem}>
                       <h4>Informasi Data Diri</h4>
-                      <p>
-                        Berisi informasi tambahan seperti asal daerah dan nomor
-                        HP yang dienkripsi.
-                      </p>
+                      <p>Berisi informasi tambahan seperti asal daerah dan nomor HP yang dienkripsi.</p>
                     </div>
 
                     <div className={styles.privacyItem}>
                       <h4>Riwayat Aktivitas</h4>
-                      <p>
-                        Riwayat jumlah chat, jumlah pembayaran, rentang tanggal
-                        kos, serta lama sewa.
-                      </p>
+                      <p>Riwayat jumlah chat, jumlah pembayaran, rentang tanggal kos, serta lama sewa.</p>
                     </div>
 
                     <div className={styles.privacyItem}>
                       <h4>Riwayat Pencarian Kos</h4>
-                      <p>
-                        Riwayat jenis kos, rentang harga dan fasilitas yang
-                        dicari dan kata kunci.
-                      </p>
+                      <p>Riwayat jenis kos, rentang harga dan fasilitas yang dicari dan kata kunci.</p>
                     </div>
                   </div>
                 </div>

@@ -317,14 +317,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #2c3e3e;
   cursor: pointer;
-  color: #666;
-}
-
-.radioLabel input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #61adad;
 }
 
 .section {
@@ -414,6 +409,11 @@
 .infoValue {
   font-weight: 500;
   color: #2c3e3e;
+}
+
+.incomplete {
+  color: #b89600;
+  font-style: italic;
 }
 
 .privacySection {

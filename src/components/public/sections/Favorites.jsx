@@ -1,12 +1,30 @@
 import { useState } from 'react';
-import { Heart, MapPin, Star, X } from 'lucide-react';
-import styles from './Favorites.module.css';
+import { useNavigate } from 'react-router-dom';
 import { dummyKostList } from '../../../data/dummyKost';
+import { Heart, MapPin, Star, X } from 'lucide-react';
+import { getLoggedInUser, logout } from '../../../hooks/useAuth';
+import styles from './Favorites.module.css';
 import KostCard from '../cards/KostCard';
+import Navbar from '../layout/NavigationBar.jsx';
+import ChatSidebarUser from '../layout/ChatSidebarUser';
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState(dummyKostList.slice(0, 2));
   const [recentViewed, setRecentViewed] = useState(dummyKostList.slice(2));
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const user = getLoggedInUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const handleChatOpen = () => {
+    setIsChatOpen(true);
+  };
 
   const removeFavorite = (id) => {
     setFavorites(favorites.filter((kost) => kost.id !== id));
@@ -24,6 +42,7 @@ const Favorites = () => {
 
   return (
     <div className={styles.favoritesPage}>
+      <Navbar user={user} onLogout={handleLogout} navigate={navigate} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} onChatOpen={handleChatOpen} />
       <div className="container mx-auto px-4 py-8">
         <h1 className={styles.title}>Favorit & Riwayat</h1>
 
@@ -144,6 +163,7 @@ const Favorites = () => {
         {/* Chat Floating Button */}
         <button className={styles.chatFloatButton}>💬 Chat</button>
       </div>
+      <ChatSidebarUser isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };

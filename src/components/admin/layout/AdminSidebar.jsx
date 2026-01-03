@@ -14,16 +14,8 @@ const AdminSidebar = () => {
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
     { path: '/admin/kosts', icon: <Home size={20} />, label: 'Kelola Kost' },
     { path: '/admin/users', icon: <Users size={20} />, label: 'Kelola User' },
-    {
-      path: '/admin/chat',
-      icon: <MessageSquare size={20} />,
-      label: 'Chat Support',
-    },
-    {
-      path: '/admin/settings',
-      icon: <Settings size={20} />,
-      label: 'Settings',
-    },
+    { path: '/admin/chat', icon: <MessageSquare size={20} />, label: 'Chat Support' },
+    { path: '/admin/settings', icon: <Settings size={20} />, label: 'Settings' },
   ];
 
   return (
@@ -39,12 +31,7 @@ const AdminSidebar = () => {
         <ul className={styles.menuList}>
           {menuItems.map((item) => (
             <li key={item.path}>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `${styles.menuItem} ${isActive ? styles.active : ''}`
-                }
-              >
+              <NavLink to={item.path} end={item.path === '/admin'} className={({ isActive }) => `${styles.menuItem} ${isActive ? styles.active : ''}`}>
                 {item.icon}
                 <span>{item.label}</span>
               </NavLink>

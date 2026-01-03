@@ -1,19 +1,21 @@
+import { Link } from 'react-router-dom';
 import { Star, MapPin } from 'lucide-react';
-import styles from './KostCard.module.css';
-
-// shadcn ui
-
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
-import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card"
+import styles from './KostCard.module.css';
 
 const KostCard = ({ kost }) => {
   return (
     <Card className={styles.kostCard}>
+      {/* <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div> */}
       {/* Image */}
       <div className={styles.kostImageContainer}>
         <img src={kost.image} alt={kost.name} className={styles.kostImage} />
@@ -60,9 +62,15 @@ const KostCard = ({ kost }) => {
           </div>
         </div>
 
-        <Button className={`w-full ${styles.button} ${ !kost.isAvailable && styles.buttonDisabled }`} disabled={!kost.isAvailable}>
+        <Link to={`/detail-produk/${kost.id}`}>
+          <Button className={`w-full ${styles.button} ${!kost.isAvailable && styles.buttonDisabled}`} disabled={!kost.isAvailable}>
+            {kost.isAvailable ? 'Lihat Detail' : 'Tidak Tersedia'}
+          </Button>
+        </Link>
+
+        {/* <Button className={`w-full ${styles.button} ${ !kost.isAvailable && styles.buttonDisabled }`} disabled={!kost.isAvailable}>
           {kost.isAvailable ? 'Lihat Detail' : 'Tidak Tersedia'}
-        </Button>
+        </Button> */}
       </div>
     </Card>
   );
