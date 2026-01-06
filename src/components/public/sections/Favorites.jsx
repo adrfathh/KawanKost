@@ -1,169 +1,128 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { dummyKostList } from '../../../data/dummyKost';
 import { Heart, MapPin, Star, X } from 'lucide-react';
 import { getLoggedInUser, logout } from '../../../hooks/useAuth';
 import styles from './Favorites.module.css';
-import KostCard from '../cards/KostCard';
 import Navbar from '../layout/NavigationBar.jsx';
 import ChatSidebarUser from '../layout/ChatSidebarUser';
 
-const Favorites = () => {
-  const [favorites, setFavorites] = useState(dummyKostList.slice(0, 2));
-  const [recentViewed, setRecentViewed] = useState(dummyKostList.slice(2));
+const USER_API = "https://6957da9df7ea690182d34812.mockapi.io/users";
+const KOST_API = "https://6957da9df7ea690182d34812.mockapi.io/KostList";
 
+const Favorites = () => {
+  const [favoriteIds, setFavoriteIds] = useState([]);
+  const [favoriteKosts, setFavoriteKosts] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+
   const user = getLoggedInUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+
+    fetch(`${USER_API}/${user.id}`)
+      .then(res => res.json())
+      .then(data => {
+        setFavoriteIds(data.favorite || []);
+      });
+  }, [user]);
+
+  useEffect(() => {
+    if (favoriteIds.length === 0) {
+      setFavoriteKosts([]);
+      return;
+    }
+
+    Promise.all(
+      favoriteIds.map(id =>
+        fetch(`${KOST_API}/${id}`).then(res => res.json())
+      )
+    ).then(setFavoriteKosts);
+  }, [favoriteIds]);
+
+  const toggleFavorite = async (kostId) => {
+    let updated;
+
+    if (favoriteIds.includes(kostId)) {
+      updated = favoriteIds.filter(id => id !== kostId);
+    } else {
+      updated = [...favoriteIds, kostId];
+    }
+
+    setFavoriteIds(updated);
+
+    await fetch(`${USER_API}/${user.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ favorite: updated }),
+    });
+  };
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  const handleChatOpen = () => {
-    setIsChatOpen(true);
-  };
-
-  const removeFavorite = (id) => {
-    setFavorites(favorites.filter((kost) => kost.id !== id));
-  };
-
-  const addToFavorites = (kost) => {
-    if (!favorites.find((f) => f.id === kost.id)) {
-      setFavorites([...favorites, kost]);
-    }
-  };
-
-  const removeRecent = (id) => {
-    setRecentViewed(recentViewed.filter((kost) => kost.id !== id));
-  };
-
   return (
     <div className={styles.favoritesPage}>
-      <Navbar user={user} onLogout={handleLogout} navigate={navigate} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} onChatOpen={handleChatOpen} />
+      <Navbar
+        user={user}
+        onLogout={handleLogout}
+        navigate={navigate}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        onChatOpen={() => setIsChatOpen(true)}
+      />
+
       <div className="container mx-auto px-4 py-8">
-        <h1 className={styles.title}>Favorit & Riwayat</h1>
+        <h1 className={styles.title}>Favorit</h1>
 
-        {/* Difavoritkan Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            <Heart size={20} className="mr-2" />
-            Difavoritkan
-          </h2>
+        {favoriteKosts.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Heart size={48} />
+            <p>Belum ada kost yang difavoritkan</p>
+          </div>
+        ) : (
+          <div className={styles.grid}>
+            {favoriteKosts.map((kost) => (
+              <div key={kost.id} className={styles.favoriteCard}>
+                <div className={styles.favoriteImage}>
+                  <img src={kost.image} alt={kost.name} />
+                  <button
+                    className={styles.removeButton}
+                    onClick={() => toggleFavorite(kost.id)}
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
 
-          {favorites.length === 0 ? (
-            <div className={styles.emptyState}>
-              <Heart size={48} className={styles.emptyIcon} />
-              <p>Belum ada kost yang difavoritkan</p>
-            </div>
-          ) : (
-            <div className={styles.grid}>
-              {favorites.map((kost) => (
-                <div key={kost.id} className={styles.favoriteCard}>
-                  <div className={styles.favoriteImage}>
-                    <img src={kost.image} alt={kost.name} />
-                    <button
-                      className={styles.removeButton}
-                      onClick={() => removeFavorite(kost.id)}
-                    >
-                      <X size={16} />
-                    </button>
+                <div className={styles.favoriteContent}>
+                  <h3 className={styles.kostName}>{kost.name}</h3>
+
+                  <div className={styles.location}>
+                    <MapPin size={14} />
+                    <span>{kost.address}</span>
                   </div>
-                  <div className={styles.favoriteContent}>
-                    <div className={styles.favoriteHeader}>
-                      <h3 className={styles.kostName}>{kost.name}</h3>
-                      <span className={styles.typeBadge}>{kost.type}</span>
-                    </div>
 
-                    <div className={styles.location}>
-                      <MapPin size={14} />
-                      <span>{kost.address.substring(0, 40)}...</span>
+                  <div className={styles.footer}>
+                    <div className={styles.rating}>
+                      <Star size={14} />
+                      <span>{kost.rating}</span>
                     </div>
-
-                    <div className={styles.facilities}>
-                      {kost.facilities.slice(0, 3).map((facility, index) => (
-                        <span key={index} className={styles.facility}>
-                          {facility}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className={styles.footer}>
-                      <div className={styles.rating}>
-                        <Star size={14} className={styles.starIcon} />
-                        <span>{kost.rating}</span>
-                      </div>
-                      <span className={styles.price}>{kost.price}</span>
-                    </div>
+                    <span className={styles.price}>{kost.price}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Permah Dilihat Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Permah Dilibat</h2>
-
-          {recentViewed.length === 0 ? (
-            <div className={styles.emptyState}>
-              <p>Belum ada riwayat penelusuran</p>
-            </div>
-          ) : (
-            <div className={styles.grid}>
-              {recentViewed.map((kost) => (
-                <div key={kost.id} className={styles.recentCard}>
-                  <div className={styles.recentImage}>
-                    <img src={kost.image} alt={kost.name} />
-                    <button
-                      className={styles.favoriteButton}
-                      onClick={() => addToFavorites(kost)}
-                    >
-                      <Heart size={16} />
-                    </button>
-                    <button
-                      className={styles.removeRecentButton}
-                      onClick={() => removeRecent(kost.id)}
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                  <div className={styles.recentContent}>
-                    <div className={styles.recentHeader}>
-                      <h3 className={styles.kostName}>{kost.name}</h3>
-                      <span className={styles.typeBadge}>{kost.type}</span>
-                    </div>
-
-                    <div className={styles.location}>
-                      <MapPin size={14} />
-                      <span>{kost.address.substring(0, 35)}...</span>
-                    </div>
-
-                    <div className={styles.footer}>
-                      <div className={styles.meta}>
-                        <span className={styles.viewCount}>
-                          Dilihat 112 kali
-                        </span>
-                        <span className={styles.availability}>
-                          {kost.isAvailable ? 'Tersedia' : 'Penuh'}
-                        </span>
-                      </div>
-                      <span className={styles.price}>{kost.price}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Chat Floating Button */}
-        <button className={styles.chatFloatButton}>💬 Chat</button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      <ChatSidebarUser isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+
+      <ChatSidebarUser
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </div>
   );
 };

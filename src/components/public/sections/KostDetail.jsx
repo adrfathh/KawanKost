@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {  MapPin, Star, CheckCircle, Wifi, Droplets, Shield,Calendar,Users,Clock } from "lucide-react";
+import { MapPin, Star, CheckCircle, Wifi, Droplets, Shield,Calendar,Users,Clock } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const KostDetail = () => {

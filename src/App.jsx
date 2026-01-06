@@ -7,6 +7,7 @@ import SignUp from './pages/register/SignUp';
 import SearchPage from './components/public/sections/Search';
 import Dashboard from './components/admin/section/Dashboard';
 import ProfilePage from './components/public/sections/Profile';
+import KostCollection from './components/public/sections/KostCollection';
 import Favorites from './components/public/sections/Favorites';
 import KostDetail from './components/public/sections/KostDetail'; // tinggal tambahin sectionny aja di component
 import KostManagement from './components/admin/section/KostManagement';
@@ -21,12 +22,13 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/detail-produk/:id" element={<KostDetail />} />
+      <Route path="/kostCollection" element={<KostCollection />} />
 
       {/* User Routes */}
       <Route path="/favorites" element={user ? <Favorites /> : <Navigate to="/login" replace />} />
-      <Route path="/search" element={<SearchPage />} />
       <Route path="/profile" element={ user ? <ProfilePage user={user} /> : <Navigate to="/login" replace /> } />
-      <Route path="/detail-produk/:id" element={<KostDetail />} />
 
       {/* Admin Routes */}
       <Route path="/admin" element={<Admin />}>

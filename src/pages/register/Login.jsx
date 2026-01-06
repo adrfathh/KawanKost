@@ -6,9 +6,6 @@ import { loginUser, setLoggedInUser } from "../../hooks/useAuth"
 import kawankost from "../../assets/icons/kawankost.png";
 import kost_vector from "../../assets/images/kost-vector.png";
 
-
-
-
 function Login() {
     const [count, setCount] = useState(0)
 
@@ -17,24 +14,24 @@ function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        const user = loginUser(email, password)
+        const user = await loginUser(email, password);
 
         if (!user) {
-            alert("Email atau password salah")
-            return
+            alert("Email atau password salah");
+            return;
         }
 
-        setLoggedInUser(user)
+        setLoggedInUser(user);
 
         if (user.role === "admin") {
             navigate("/admin");
         } else {
             navigate("/");
         }
-    }
+    };
 
     return (
         <>

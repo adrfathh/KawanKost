@@ -184,6 +184,10 @@
   transition: all 0.3s ease;
 }
 
+.see {
+  width: 100%;
+}
+
 .actionButton:hover {
   background-color: #f5f5f5;
 }

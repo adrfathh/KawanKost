@@ -1,5 +1,6 @@
 import { dummyAdmin } from "../data/dummyAdmin.js"
-import { dummyUser } from "../data/dummyUser.js"
+
+const API_URL = "https://6957da9df7ea690182d34812.mockapi.io/users";
 
 export const getUsers = () => {
   return JSON.parse(localStorage.getItem("users")) || []
@@ -11,35 +12,38 @@ export const saveUser = (user) => {
   localStorage.setItem("users", JSON.stringify(users))
 }
 
-export const loginUser = (email, password) => {
-  if (
-    email === dummyAdmin.email &&
-    password === dummyAdmin.password
-  ) {
-    return dummyAdmin;
-  }
+export const loginUser = async (email, password) => {
+  const res = await fetch(API_URL);
+  const users = await res.json();
 
-  if (
-    email === dummyUser.email &&
-    password === dummyUser.password
-  ) {
-    return dummyUser;
-  }
-
-  const users = getUsers();
   return users.find(
-    (u) => u.email === email && u.password === password
+    (user) => user.email === email && user.password === password
   );
 };
 
+// SET USER LOGIN
 export const setLoggedInUser = (user) => {
-  localStorage.setItem("loggedInUser", JSON.stringify(user))
-}
+  localStorage.setItem("loggedInUser", JSON.stringify(user));
+};
 
+// GET USER LOGIN
 export const getLoggedInUser = () => {
-  return JSON.parse(localStorage.getItem("loggedInUser"))
-}
+  const user = localStorage.getItem("loggedInUser");
+  return user ? JSON.parse(user) : null;
+};
 
+// LOGOUT
 export const logout = () => {
-  localStorage.removeItem("loggedInUser")
-}
+  localStorage.removeItem("loggedInUser");
+};
+
+// UPDATE USER DI MOCKAPI
+export const updateUser = async (id, updatedData) => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedData),
+  });
+
+  return await res.json();
+};

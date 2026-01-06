@@ -3,6 +3,61 @@
   padding: 1rem;
 }
 
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form input,
+.form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modalActions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modalActions button[type="submit"] {
+  background: linear-gradient(135deg, #61adad 0%, #4a8a8a 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.modalActions button:hover {
+  opacity: 0.8;
+}
+
 .header {
   margin-bottom: 2rem;
 }
@@ -23,8 +78,15 @@
 
 .searchBar {
   position: relative;
+  display: flex;
+  gap: 1rem;
   flex: 1;
   max-width: 400px;
+}
+
+.searchBar input {
+  width: 50%;
+  outline: none;
 }
 
 .searchIcon {
@@ -214,28 +276,29 @@
 }
 
 .actionButton {
-  padding: 0.5rem 1rem;
-  border: 1px solid #e0e0e0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
   background: none;
-  border-radius: 4px;
+  border: 1px solid #e0e0e0;
   cursor: pointer;
-  font-size: 0.75rem;
   color: #666;
-}
-
-.edit {
-  background-color: #61adad;
-  color: white;
-  border-color: #61adad;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .actionButton:hover {
   background-color: #f5f5f5;
 }
 
-.edit:hover {
-  background-color: #4a8a8a;
+.delete:hover {
+  background-color: #ff4757;
+  color: white;
+  border-color: #ff4757;
 }
+
 
 @media (max-width: 768px) {
   .headerActions {
