@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { dummyKostList } from '../../../data/dummyKost';
 import { getLoggedInUser, logout } from '../../../hooks/useAuth';
 import { Search, Filter, MapPin, ChevronDown, Star } from 'lucide-react';
 import styles from './Search.module.css';
@@ -10,10 +9,104 @@ import ChatSidebarUser from '../layout/ChatSidebarUser';
 
 const SearchPage = () => {
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const user = getLoggedInUser();
   const navigate = useNavigate();
+  const [kostData, setKostData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const facilityOptions = ['Wi-Fi', 'AC', 'Kamar Mandi Dalam', 'Parkir', 'Laundry', 'Dapur Bersama'];
+  const [selectedFilters, setSelectedFilters] = useState({
+    type: 'all',
+    priceRange: 'all',
+    facilities: [],
+    university: '',
+  });
+
+
+  useEffect(() => {
+    const fetchKost = async () => {
+      try {
+        const res = await fetch('https://6957da9df7ea690182d34812.mockapi.io/KostList');
+        const data = await res.json();
+        setKostData(data);
+        setSearchResults(data); // default tampil semua
+      } catch (error) {
+        console.error('Gagal fetch kost:', error);
+      }
+    };
+
+    fetchKost();
+  }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    let results = kostData.filter((kost) =>
+      kost.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      kost.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    results = applyFilters(results);
+    setSearchResults(results);
+  };
+
+  const applyFilters = (data) => {
+    let filtered = [...data];
+
+    // Tipe kost
+    if (selectedFilters.type !== 'all') {
+      filtered = filtered.filter(
+        (kost) => kost.type.toLowerCase() === selectedFilters.type
+      );
+    }
+
+    // Harga
+    if (selectedFilters.priceRange !== 'all') {
+      filtered = filtered.filter((kost) => {
+        const price = Number(kost.price);
+
+        switch (selectedFilters.priceRange) {
+          case '≤ 500rb':
+            return price <= 500000;
+          case '500rb - 1jt':
+            return price > 500000 && price <= 1000000;
+          case '1jt - 2jt':
+            return price > 1000000 && price <= 2000000;
+          case '≥ 2jt':
+            return price >= 2000000;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Fasilitas
+    if (selectedFilters.facilities.length > 0) {
+      filtered = filtered.filter((kost) =>
+        selectedFilters.facilities.every((facility) =>
+          kost.facilities.includes(facility)
+        )
+      );
+    }
+
+    return filtered;
+  };
+
+  useEffect(() => {
+    const results = applyFilters(
+      kostData.filter(
+        (kost) =>
+          kost.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          kost.address.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+
+    setSearchResults(results);
+  }, [selectedFilters]);
+
 
   const handleLogout = () => {
     logout();
@@ -22,31 +115,6 @@ const SearchPage = () => {
 
   const handleChatOpen = () => {
     setIsChatOpen(true);
-  };
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilters, setSelectedFilters] = useState({
-    type: 'all',
-    priceRange: 'all',
-    facilities: [],
-    university: '',
-  });
-
-  const [showFilters, setShowFilters] = useState(false);
-  const [searchResults, setSearchResults] = useState(dummyKostList);
-
-  const universities = ['UGM', 'UNY', 'UNPAD', 'UNAIR', 'UI', 'UNDIP', 'ITB'];
-  const facilityOptions = ['Wi-Fi', 'AC', 'Kamar Mandi Dalam', 'Parkir', 'Laundry', 'Dapur'];
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // Implement search logic here
-    const filtered = dummyKostList.filter(
-      (kost) =>
-        kost.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        kost.address.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(filtered);
   };
 
   const toggleFilter = (filterType, value) => {
@@ -105,24 +173,6 @@ const SearchPage = () => {
               />
             </button>
           </form>
-
-          {/* Quick Filters */}
-          <div className={styles.quickFilters}>
-            <span className={styles.quickFilterLabel}>Kampus terdekat:</span>
-            <div className={styles.universityChips}>
-              {universities.map((univ) => (
-                <button
-                  key={univ}
-                  className={`${styles.universityChip} ${
-                    selectedFilters.university === univ ? styles.active : ''
-                  }`}
-                  onClick={() => toggleFilter('university', univ)}
-                >
-                  {univ}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Filters Panel */}
@@ -238,12 +288,6 @@ const SearchPage = () => {
           </div>
         ) : (
           <>
-            {/* Promo Section */}
-            <div className={styles.promoSection}>
-              <div className={styles.promoBadge}>Promo Ngebut</div>
-              <h3 className={styles.promoTitle}>Kos Andalan</h3>
-              <p className={styles.promoSubtitle}>Paling direkomendasikan</p>
-            </div>
 
             {/* Kost Listings */}
             <div className={styles.grid}>

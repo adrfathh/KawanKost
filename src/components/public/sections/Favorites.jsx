@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MapPin, Star, X } from 'lucide-react';
+import { Heart, Star, X } from 'lucide-react';
 import { getLoggedInUser, logout } from '../../../hooks/useAuth';
 import styles from './Favorites.module.css';
 import Navbar from '../layout/NavigationBar.jsx';
@@ -52,11 +52,15 @@ const Favorites = () => {
 
     setFavoriteIds(updated);
 
-    await fetch(`${USER_API}/${user.id}`, {
+    const res = await fetch(`${USER_API}/${user.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ favorite: updated }),
     });
+
+    const updatedUser = await res.json();
+
+    localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
   };
 
   const handleLogout = () => {
@@ -101,7 +105,6 @@ const Favorites = () => {
                   <h3 className={styles.kostName}>{kost.name}</h3>
 
                   <div className={styles.location}>
-                    <MapPin size={14} />
                     <span>{kost.address}</span>
                   </div>
 
@@ -110,7 +113,7 @@ const Favorites = () => {
                       <Star size={14} />
                       <span>{kost.rating}</span>
                     </div>
-                    <span className={styles.price}>{kost.price}</span>
+                    <span className={styles.price}>Rp {Number(kost.price).toLocaleString("id-ID")}/bulan</span>
                   </div>
                 </div>
               </div>

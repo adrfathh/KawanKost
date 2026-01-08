@@ -1,16 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { getLoggedInUser, logout } from '../../../hooks/useAuth';
 import { User, Calendar, Phone, Mail, MapPin, Shield, Clock, CreditCard, History, Settings, ChevronRight, CheckCircle } from 'lucide-react';
 import styles from './Profile.module.css';
 import Navbar from '../layout/NavigationBar.jsx';
-import ChatSidebarUser from '../layout/ChatSidebarUser';
 
 const ProfilePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const user = getLoggedInUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch(
+        `https://6957da9df7ea690182d34812.mockapi.io/users/${user.id}`
+      );
+      const data = await res.json();
+
+      setProfileData({
+        fullName: `${data.firstName} ${data.lastName}`.trim(),
+        gender: data.gender,
+        birthDate: data.birthDate,
+        phone: data.phone,
+        city: data.city,
+      });
+
+      localStorage.setItem('loggedInUser', JSON.stringify(data));
+    };
+
+    fetchUser();
+  }, []);
+
 
   const handleLogout = () => {
     logout();
@@ -54,21 +76,57 @@ const ProfilePage = () => {
 
   const profileCompleted = isProfileComplete(profileData);
   const [isEditing, setIsEditing] = useState(false);
-  // const profileComplete = 75;
 
-  const menuItems = [
-    { icon: History, label: 'Riwayat Sewa', path: '/history' },
-    { icon: CreditCard, label: 'Riwayat Transaksi', path: '/transactions' },
-    { icon: History, label: 'Riwayat Kos', path: '/kost-history' },
-    { icon: Shield, label: 'Verifikasi Akun', path: '/verification', verified: true },
-    { icon: Settings, label: 'Pengaturan', path: '/settings' },
-  ];
-
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    // Save logic here
-    setIsEditing(false);
+
+    try {
+      const updatedUser = {
+        ...user,
+        firstName: profileData.fullName.split(' ')[0] || '',
+        lastName: profileData.fullName.split(' ').slice(1).join(' ') || '',
+        gender: profileData.gender,
+        birthDate: profileData.birthDate,
+        phone: profileData.phone,
+        city: profileData.city,
+      };
+
+      const response = await fetch(
+        `https://6957da9df7ea690182d34812.mockapi.io/users/${user.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedUser),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Gagal update profil');
+      }
+
+      const result = await response.json();
+
+      // update state lokal
+      setProfileData({
+        fullName: `${result.firstName} ${result.lastName}`.trim(),
+        gender: result.gender,
+        birthDate: result.birthDate,
+        phone: result.phone,
+        city: result.city,
+      });
+
+      // update localStorage user login
+      localStorage.setItem('loggedInUser', JSON.stringify(result));
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+      alert('Gagal menyimpan perubahan profil');
+    }
   };
+
 
   return (
     <div className={styles.profilePage}>
@@ -94,49 +152,17 @@ const ProfilePage = () => {
               <p className={styles.completionHint}>Profil yang lengkap bisa memberikan rekomendasi yang lebih akurat</p>
             </div>
           </div>
-
-          {/* Profile Stats */}
-          <div className={styles.profileStats}>
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>3</div>
-              <div className={styles.statLabel}>Kos Disewa</div>
-            </div>
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>12</div>
-              <div className={styles.statLabel}>Transaksi</div>
-            </div>
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>4.8</div>
-              <div className={styles.statLabel}>Rating</div>
-            </div>
-          </div>
         </div>
 
         <div className={styles.profileContent}>
-          {/* Left Sidebar Menu */}
           <div className={styles.sidebar}>
-            <nav className={styles.menu}>
-              {menuItems.map((item) => (
-                <a key={item.label} href={item.path} className={styles.menuItem}>
-                  <div className={styles.menuIcon}>
-                    <item.icon size={20} />
-                  </div>
-                  <span>{item.label}</span>
-                  {item.verified && (
-                    <CheckCircle size={16} className={styles.verifiedIcon} />
-                  )}
-                  <ChevronRight size={16} className={styles.chevron} />
-                </a>
-              ))}
-            </nav>
-
             {/* Kos Saya Section */}
             <div className={styles.myKost}>
               <h3 className={styles.myKostTitle}>Kos Saya</h3>
               <div className={styles.kostEmptyState}>
                 <p className={styles.kostEmptyText}>Kamu belum menyewa kos</p>
                 <p className={styles.kostEmptySubtext}>Yuk, sewa di KawanKost atau masukkan kode dari pemilik kos untuk mengaktifkan halaman ini!</p>
-                <button className={styles.findKostButton}>Cari dan Sewa Kost</button>
+                <Link to="/search" className={styles.findKostButton}>Cari dan Sewa Kost</Link>
               </div>
 
               <div className={styles.kostTips}>

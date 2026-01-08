@@ -9,7 +9,7 @@ import Dashboard from './components/admin/section/Dashboard';
 import ProfilePage from './components/public/sections/Profile';
 import KostCollection from './components/public/sections/KostCollection';
 import Favorites from './components/public/sections/Favorites';
-import KostDetail from './components/public/sections/KostDetail'; // tinggal tambahin sectionny aja di component
+import KostDetail from './components/public/sections/KostDetail';
 import KostManagement from './components/admin/section/KostManagement';
 import UserManagement from './components/admin/section/UserManagement';
 
