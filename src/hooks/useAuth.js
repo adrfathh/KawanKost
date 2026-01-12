@@ -2,15 +2,24 @@ import { dummyAdmin } from "../data/dummyAdmin.js"
 
 const API_URL = "https://6957da9df7ea690182d34812.mockapi.io/users";
 
-export const getUsers = () => {
-  return JSON.parse(localStorage.getItem("users")) || []
-}
+export const getUsers = async () => {
+  const res = await fetch(API_URL);
+  if (!res.ok) throw new Error("Gagal mengambil user");
+  return res.json();
+};
 
-export const saveUser = (user) => {
-  const users = getUsers()
-  users.push(user)
-  localStorage.setItem("users", JSON.stringify(users))
-}
+export const saveUser = async (user) => {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+
+  if (!res.ok) throw new Error("Gagal menyimpan user");
+  return res.json();
+};
 
 export const loginUser = async (email, password) => {
   const res = await fetch(API_URL);

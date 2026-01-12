@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Users, Home, DollarSign, TrendingUp, Calendar, Package, Star, MapPin } from 'lucide-react';
 import { getUsers } from '../../../hooks/useAuth';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [kosts, setKosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const users = getUsers();
+        const users = await getUsers();
 
         const res = await fetch(
           "https://6957da9df7ea690182d34812.mockapi.io/KostList"
@@ -220,14 +222,14 @@ const Dashboard = () => {
           
           <div className="grid grid-cols-2 gap-3">
             {[
-              { icon: <Home className="w-5 h-5" />, label: 'Tambah Kost Baru', color: 'bg-teal-50 text-teal-600 hover:bg-teal-100' },
-              { icon: <Users className="w-5 h-5" />, label: 'Kelola User', color: 'bg-blue-50 text-blue-600 hover:bg-blue-100' },
+              { icon: <Home className="w-5 h-5" />, label: 'Tambah Kost Baru', color: 'bg-teal-50 text-teal-600 hover:bg-teal-100', path: '/admin/kosts' },
+              { icon: <Users className="w-5 h-5" />, label: 'Kelola User', color: 'bg-blue-50 text-blue-600 hover:bg-blue-100', path: '/admin/users' },
               // { icon: <DollarSign className="w-5 h-5" />, label: 'Lihat Laporan', color: 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' },
               // { icon: <Package className="w-5 h-5" />, label: 'Update Stok', color: 'bg-purple-50 text-purple-600 hover:bg-purple-100' },
               // { icon: <Star className="w-5 h-5" />, label: 'Ulasan Baru', color: 'bg-amber-50 text-amber-600 hover:bg-amber-100' },
               // { icon: <MapPin className="w-5 h-5" />, label: 'Atur Lokasi', color: 'bg-rose-50 text-rose-600 hover:bg-rose-100' },
             ].map((action, index) => (
-              <button key={index} className={`flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 ${action.color} transition-colors duration-200`}>
+              <button onClick={() => navigate(action.path)} key={index} className={`flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 ${action.color} transition-colors duration-200`}>
                 <div className="mb-2">{action.icon}</div>
                 <span className="text-xs font-medium text-center">{action.label}</span>
               </button>

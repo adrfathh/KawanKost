@@ -21,24 +21,50 @@ function SignUp() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-        const users = getUsers()
-        const exists = users.find((u) => u.email === email)
-        if (exists) {
-            alert("Email sudah terdaftar")
-            return
+        if (!firstName || !lastName || !email || !password) {
+            alert("Semua field wajib diisi");
+            return;
         }
 
         if (!agree) {
-        alert("Anda harus menyetujui Terms of Service dan Privacy Policy")
-            return
+            alert("Anda harus menyetujui Terms & Privacy Policy");
+            return;
         }
 
-        saveUser({ firstName, lastName, email, password })
-        navigate("/login")
-    }
+        try {
+            const users = await getUsers();
+
+            const exists = users.find((u) => u.email === email);
+            if (exists) {
+            alert("Email sudah terdaftar");
+            return;
+            }
+
+            const newUser = {
+                firstName,
+                lastName,
+                email,
+                password,
+                role: "user",
+                gender: "",
+                birthDate: "",
+                phone: "",
+                city: "",
+                favorite: [],
+            };
+
+            await saveUser(newUser);
+
+            alert("Registrasi berhasil");
+            navigate("/login");
+        } catch (error) {
+            console.error(error);
+            alert("Terjadi kesalahan saat mendaftar");
+        }
+    };
 
     return (
         <>

@@ -35,7 +35,7 @@ const AdminHeader = ({ onLogout, onChatToggle }) => {
                 <img 
                   src={KawanKost} 
                   alt="KawanKost" 
-                  className="h-7 w-auto filter drop-shadow-sm"
+                  className="h-7 w-auto filter"
                 />
                 <div className="hidden md:block">
                   <div className="text-xs font-medium text-gray-500">Admin Panel</div>

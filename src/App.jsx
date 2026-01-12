@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { getLoggedInUser } from './hooks/useAuth';
 import Home from './pages/Home';
@@ -14,7 +15,7 @@ import KostManagement from './components/admin/section/KostManagement';
 import UserManagement from './components/admin/section/UserManagement';
 
 function App() {
-  const user = getLoggedInUser();
+  const [user, setUser] = useState(() => getLoggedInUser());
 
   return (
     <Routes>
