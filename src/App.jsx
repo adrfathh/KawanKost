@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { getLoggedInUser } from './hooks/useAuth';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
+import ErrorPage404 from './pages/404';
 import Login from './pages/register/Login';
 import SignUp from './pages/register/SignUp';
 import SearchPage from './components/public/sections/Search';
@@ -20,6 +21,7 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="*" element={<ErrorPage404 />} />
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
